@@ -11,7 +11,7 @@ namespace TaskApp
         {
 
             TaskManager taskManager = new TaskManager();
-            string filePath = "tasks.txt";
+            string filePath = "Data/tasks.txt";
             FileTaskStorage taskStorage = new FileTaskStorage(filePath);
 
             List<Task> tasks = taskStorage.LoadTasks();
