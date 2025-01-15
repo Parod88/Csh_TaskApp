@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TaskApp;
 
 namespace TaskApp
 {
@@ -8,94 +9,40 @@ namespace TaskApp
     {
         static  void Main(string[] args)
         {
-            string filePath = "tasks.txt"; 
-            var taskStorage = new FileTaskStorage(filePath);
 
-            List<Task> tasks = taskStorage.LoadTasks();
-
-            Console.WriteLine("Gestión de tareas");
-            bool exit = false;
-            
-            while (!exit)
-            {
-                Console.WriteLine("\nSeleccione una opción:");
-                Console.WriteLine("1. Ver tareas");
-                Console.WriteLine("2. Agregar tarea");
-                Console.WriteLine("3. Marcar tarea como completada");
-                Console.WriteLine("4. Guardar y salir");
-
-                string option = Console.ReadLine()!;
-
-                switch (option)
-                {
-                    case "1":
-                        ShowTasks(tasks); 
-                        break;
-
-                    case "2":
-                         AddTask(tasks); 
-                        break;
-
-                    case "3":
-                         MarkTaskComplete(tasks); 
-                        break;
-
-                    case "4":
-                        taskStorage.SaveTasks(tasks); 
-                        Console.WriteLine("Tareas guardadas. Saliendo...");
-                        exit = true;
-                        break;
-
-                    default:
-                        Console.WriteLine("Opción no válida. Intente de nuevo.");
-                        break;
-                }
-            }
-        }
-
-        static void ShowTasks(List<Task> tasks)
+            TaskManager taskManager = new TaskManager();
+             while (true)
         {
-            Console.WriteLine("\nLista de tareas:");
-            foreach (var task in tasks)
+            Console.WriteLine("\nMenú de opciones:");
+            Console.WriteLine("1. Mostrar tareas");
+            Console.WriteLine("2. Agregar tarea");
+            Console.WriteLine("3. Marcar tarea como completada");
+            Console.WriteLine("4. Salir");
+
+            Console.WriteLine("Seleccione una opción:");
+            string option = Console.ReadLine()!;
+
+            switch (option)
             {
-                Console.WriteLine($"{task.Id}: {task.Description} - {task.Priority} - {task.LimitDate.ToShortDateString()} - {(task.IsComplete ? "Completada" : "Pendiente")}");
+                case "1":
+                    taskManager.ShowTasks();
+                    break;
+                case "2":
+                    taskManager.AddTask();
+                    break;
+                case "3":
+                    taskManager.MarkTaskComplete();
+                    break;
+                case "4":
+                    Console.WriteLine("Saliendo del programa...");
+                    return;
+                default:
+                    Console.WriteLine("Opción no válida. Intente nuevamente.");
+                    break;
             }
         }
-
-        static void AddTask(List<Task> tasks)
-        {
-            Console.WriteLine("Ingrese descripción de la tarea:");
-            string description = Console.ReadLine()!;
-
-            Console.WriteLine("Ingrese prioridad (Low, Medium, High):");
-            string priorityInput = Console.ReadLine()!;
-            Priority priority = Enum.Parse<Priority>(priorityInput!, true);
-
-            Console.WriteLine("Ingrese fecha límite (YYYY-MM-DD):");
-            DateTime limitDate = DateTime.Parse(Console.ReadLine()!);
-
-            string id = Guid.NewGuid().ToString(); 
-            var newTask = new Task(id, description!, priority, limitDate);
-
-            tasks.Add(newTask);
-            Console.WriteLine("Tarea agregada exitosamente.");
         }
 
-        static void MarkTaskComplete(List<Task> tasks)
-        {
-            Console.WriteLine("Ingrese el ID de la tarea a marcar como completada:");
-            string id = Console.ReadLine()!;
-
-            var task = tasks.Find(t => t.Id == id);
-            if (task != null)
-            {
-                task.IsComplete = true;
-                Console.WriteLine("Tarea marcada como completada.");
-            }
-            else
-            {
-                Console.WriteLine("Tarea no encontrada.");
-            }
-        }
+        
     }
 }
