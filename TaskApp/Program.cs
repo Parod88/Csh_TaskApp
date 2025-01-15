@@ -24,7 +24,7 @@ namespace TaskApp
                 Console.WriteLine("3. Marcar tarea como completada");
                 Console.WriteLine("4. Guardar y salir");
 
-                string option = Console.ReadLine();
+                string option = Console.ReadLine()!;
 
                 switch (option)
                 {
@@ -65,17 +65,17 @@ namespace TaskApp
         static void AddTask(List<Task> tasks)
         {
             Console.WriteLine("Ingrese descripción de la tarea:");
-            string description = Console.ReadLine();
+            string description = Console.ReadLine()!;
 
             Console.WriteLine("Ingrese prioridad (Low, Medium, High):");
-            string priorityInput = Console.ReadLine();
-            Priority priority = Enum.Parse<Priority>(priorityInput, true);
+            string priorityInput = Console.ReadLine()!;
+            Priority priority = Enum.Parse<Priority>(priorityInput!, true);
 
             Console.WriteLine("Ingrese fecha límite (YYYY-MM-DD):");
-            DateTime limitDate = DateTime.Parse(Console.ReadLine());
+            DateTime limitDate = DateTime.Parse(Console.ReadLine()!);
 
             string id = Guid.NewGuid().ToString(); 
-            var newTask = new Task(id, description, priority, limitDate);
+            var newTask = new Task(id, description!, priority, limitDate);
 
             tasks.Add(newTask);
             Console.WriteLine("Tarea agregada exitosamente.");
@@ -84,7 +84,7 @@ namespace TaskApp
         static void MarkTaskComplete(List<Task> tasks)
         {
             Console.WriteLine("Ingrese el ID de la tarea a marcar como completada:");
-            string id = Console.ReadLine();
+            string id = Console.ReadLine()!;
 
             var task = tasks.Find(t => t.Id == id);
             if (task != null)
