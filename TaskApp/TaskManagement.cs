@@ -2,16 +2,16 @@ namespace TaskApp
 {
     public class TaskManager
     {
-        private List<Task> _tasks = new();
+     List<Task> tasks = new();
 
-        public void ShowTasks()
+        public void ShowTasks(List<Task> tasks)
         {
-            if (_tasks.Count > 0)
+            if (tasks.Count > 0)
             {
                 Console.WriteLine("\nLista de tareas:");
-                foreach (var task in _tasks)
+                foreach (var task in tasks)
                 {
-                    Console.WriteLine(task);
+                    Console.WriteLine($"{task.Id}: {task.Description} - {task.Priority} - {task.LimitDate.ToShortDateString()} - {(task.IsComplete ? "Completada" : "Pendiente")}");
                 }
             }
             else
@@ -20,7 +20,7 @@ namespace TaskApp
             }
         }
 
-        public void AddTask()
+        public void AddTask(List<Task> tasks)
         {
             Console.WriteLine("Ingrese descripción de la tarea:");
             string description = Console.ReadLine()!;
@@ -43,16 +43,16 @@ namespace TaskApp
             string id = Guid.NewGuid().ToString();
             var newTask = new Task(id, description, priority, limitDate);
 
-            _tasks.Add(newTask);
+            tasks.Add(newTask);
             Console.WriteLine("Tarea agregada exitosamente.");
         }
 
-        public void MarkTaskComplete()
+        public void MarkTaskComplete(List<Task> tasks)
         {
             Console.WriteLine("Ingrese el ID de la tarea a marcar como completada:");
             string id = Console.ReadLine()!;
 
-            var task = _tasks.Find(t => t.Id == id);
+            var task = tasks.Find(t => t.Id == id);
             if (task != null)
             {
                 task.IsComplete = true;
